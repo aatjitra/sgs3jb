@@ -64,7 +64,9 @@ int exynos_verify_speed(struct cpufreq_policy *policy)
 
 unsigned int exynos_getspeed(unsigned int cpu)
 {
-	return clk_get_rate(exynos_info->cpu_clk) / 1000;
+	unsigned int ret = clk_get_rate(exynos_info->cpu_clk) / 1000;
+	if(ret == 1704000) ret = 1700000;
+	return ret;
 }
 
 static unsigned int exynos_get_safe_armvolt(unsigned int old_index, unsigned int new_index)
@@ -714,7 +716,7 @@ static int exynos_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	cpufreq_frequency_table_get_attr(exynos_info->freq_table, policy->cpu);
 
 	/* set the transition latency value */
-	policy->cpuinfo.transition_latency = 30 * 1000;
+	policy->cpuinfo.transition_latency = 100000;
 
 	/*
 	 * EXYNOS4 multi-core processors has 2 cores
@@ -729,11 +731,10 @@ static int exynos_cpufreq_cpu_init(struct cpufreq_policy *policy)
 		cpumask_setall(policy->cpus);
 	}
 
-	//return cpufreq_frequency_table_cpuinfo(policy, exynos_info->freq_table);
 	cpufreq_frequency_table_cpuinfo(policy, exynos_info->freq_table);
-	
+
 	/* Safe default startup limits */
-	policy->max = 1600000;
+	policy->max = 1200000;
 	policy->min = 200000;
 
 	return 0;
