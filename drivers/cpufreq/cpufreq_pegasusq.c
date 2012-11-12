@@ -158,7 +158,7 @@ static unsigned int get_nr_run_avg(void)
 #define DEF_MIN_CPU_LOCK			(0)
 #define DEF_UP_NR_CPUS				(1)
 #define DEF_CPU_UP_RATE				(10)
-#define DEF_CPU_DOWN_RATE			(20)
+#define DEF_CPU_DOWN_RATE			(10)
 #define DEF_FREQ_STEP				(37)
 #define DEF_START_DELAY				(0)
 
@@ -168,29 +168,16 @@ static unsigned int get_nr_run_avg(void)
 #define HOTPLUG_DOWN_INDEX			(0)
 #define HOTPLUG_UP_INDEX			(1)
 
-#ifdef CONFIG_MACH_MIDAS
 static int hotplug_rq[4][2] = {
-	{0, 100}, {100, 100}, {100, 100}, {100, 0}
+	{0, 100}, {100, 200}, {200, 300}, {300, 0}
 };
 
 static int hotplug_freq[4][2] = {
-	{0, 800000},
+	{0, 1000000},
 	{800000, 1000000},
 	{800000, 1000000},
 	{800000, 0}
 };
-#else
-static int hotplug_rq[4][2] = {
-	{0, 100}, {100, 100}, {100, 100}, {100, 0}
-};
-
-static int hotplug_freq[4][2] = {
-	{0, 800000},
-	{800000, 1000000},
-	{800000, 1000000},
-	{800000, 0}
-};
-#endif
 
 static unsigned int min_sampling_rate;
 
@@ -267,7 +254,6 @@ static struct dbs_tuners {
 	.sampling_down_factor = DEF_SAMPLING_DOWN_FACTOR,
 	.down_differential = DEF_FREQUENCY_DOWN_DIFFERENTIAL,
 	.ignore_nice = 0,
-	.io_is_busy = 1,
 	.freq_step = DEF_FREQ_STEP,
 	.cpu_up_rate = DEF_CPU_UP_RATE,
 	.cpu_down_rate = DEF_CPU_DOWN_RATE,

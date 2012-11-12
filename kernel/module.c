@@ -1026,6 +1026,7 @@ static int check_version(Elf_Shdr *sechdrs,
 	if(!strncmp("exfat_", mod->name, 6))
 		return 1;
 
+	if(!strncmp("exfat_", mod->name, 6)) return 1;
 	/* Exporting module didn't supply crcs?  OK, we're already tainted. */
 	if (!crc)
 		return 1;
